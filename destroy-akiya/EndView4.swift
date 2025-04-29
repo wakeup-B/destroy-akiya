@@ -11,28 +11,32 @@ struct EndView4: View {
     @State private var isARActive = false
 
     var body: some View {
-        ZStack {
-            // NavigationStackはここには書かない！！！
+        NavigationStack {
+            ZStack {
+                // 背景画像
+                Image("with_button_p4") // ← ここを新しい画像名に変更！
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
 
-            // 背景画像
-            Image("with_button_p4")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-
-            // 「次へ」ボタンのタップ領域
-            NavigationLink(destination: StartView()) {
-                Color.clear // 透明なリンク
+                // 「次へ」ボタンのタップ領域
+                Button(action: {
+                    isARActive = true
+                }) {
+                    Color.clear // 透明なタップエリア
+                }
+                .frame(width: 250, height: 80) // ← タップできる領域サイズ
+                .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height * 0.90)
+                // ↑ 85%→90%に変更して、「次へ」ボタンに合わせる！
             }
-            .frame(width: 250, height: 80)
-            .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height * 0.90)
+            .navigationBarHidden(true)
+            .navigationDestination(isPresented: $isARActive) {
+                StartView()
+            }
         }
-        .navigationBarHidden(true) // これはそのままでOK
     }
 }
 
 #Preview {
-    NavigationStack { // プレビュー用だけ、外側にNavigationStackをつける
-        EndView4()
-    }
+    EndView4() // ← ここも正しく EndView にする
 }
